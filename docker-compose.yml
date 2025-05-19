@@ -1,0 +1,17 @@
+services:
+  telegram-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: telegram_release_notifier
+    restart: unless-stopped
+    volumes:
+      # Mounts the 'bot_data' volume to the /app/data directory in the container.
+      # The repositories.json file will be managed by the application inside this directory.
+      - ./bot_data/:/app/data
+    # If you were using environment variables for the token, you'd add them here:
+    # environment:
+    #   - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN_FROM_ENV} # Example
+
+# volumes:
+#   bot_data: # Defines the named volume for persistent storage
