@@ -128,7 +128,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     action, docker_hub_repo_name, tag_name = query.data.split(":", 2) 
 
-    chat_id = query.effective_chat.id
+    chat_id = query.message.chat_id # Corrected: Get chat_id from query.message
     escaped_docker_hub_repo_name_msg = escape_markdown_v2(docker_hub_repo_name)
     escaped_tag_name_msg = escape_markdown_v2(tag_name)
 
