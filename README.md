@@ -1,5 +1,3 @@
-# Work In Progress (not fully tested)
-
 # ReleaseDockerDeployTelegram
 Deploy a release from a notify bot on telegram
 
@@ -9,8 +7,8 @@ Need a forgejo instance (or adapt for ci targeted)
 
 # How it works
 
-The script crons each hour to scan new release from dokcer hub.
-If a new tag is created on a dokcer hub 's repo added a notification will be sent.
+The script crons each hour to scan new release from docker hub.
+If a new tag is created on a docker hub 's repo added a notification will be sent.
 
 An action button under notification will create a tag on a instance forgejo.
 With a configurated pipeline, a deployment will be activated by that.
@@ -26,6 +24,6 @@ With a configurated pipeline, a deployment will be activated by that.
 
 - Start the app
 
-`docker compose build; docker compose up -d`
+`docker compose up --build -d; docker compose logs -f`
 
 
