@@ -165,30 +165,31 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             
             await context.bot.send_message(
                 chat_id=chat_id,
-                text=f"✅ Successfully triggered deployment for {escaped_repo_name_msg}:{escaped_tag_name_msg}\\. Service responded with {response.status_code}\\."
+                text=f"✅ Successfully triggered deployment for {escaped_docker_hub_repo_name_msg}:{escaped_tag_name_msg}\\. Service responded with {response.status_code}\\."
             )
-            logger.info(f"Successfully called deployment service for {repo_name}:{tag_name}. Status: {response.status_code}")
+            logger.info(f"Successfully called deployment service for {docker_hub_repo_name}:{tag_name}. Status: {response.status_code}")
 
         except requests.exceptions.HTTPError as e:
             error_reason = escape_markdown_v2(e.response.reason)
-            error_text = f"HTTP error {e.response.status_code}: {error_reason}"
-            logger.error(f"HTTP error calling deployment service for {repo_name}:{tag_name} to {service_url}: {error_text}")
+            error_details = escape_markdown_v2(e.response.text[:200]) # Show some details
+            error_text = f"HTTP error {e.response.status_code} ({error_reason}): {error_details}"
+            logger.error(f"HTTP error calling deployment service for {docker_hub_repo_name}:{tag_name} to {full_service_url}: {error_text}") # Use full_service_url
             await context.bot.send_message(
                 chat_id=chat_id,
-                text=f"⚠️ Failed to trigger deployment for {escaped_repo_name_msg}:{escaped_tag_name_msg}\\. Service responded with: {error_text}"
+                text=f"⚠️ Failed to trigger deployment for {escaped_docker_hub_repo_name_msg}:{escaped_tag_name_msg}\\. Service responded with: {error_text}"
             )
         except requests.exceptions.RequestException as e:
             error_str = escape_markdown_v2(str(e))
-            logger.error(f"Error calling deployment service for {repo_name}:{tag_name} to {service_url}: {e}")
+            logger.error(f"Error calling deployment service for {docker_hub_repo_name}:{tag_name} to {full_service_url}: {e}") # Use full_service_url
             await context.bot.send_message(
                 chat_id=chat_id,
-                text=f"⚠️ Failed to call deployment service for {escaped_repo_name_msg}:{escaped_tag_name_msg}\\. Error: {error_str}\\."
+                text=f"⚠️ Failed to call deployment service for {escaped_docker_hub_repo_name_msg}:{escaped_tag_name_msg}\\. Error: {error_str}\\."
             )
         except Exception as e: # Catch any other unexpected errors
-            logger.error(f"Unexpected error during deployment call for {repo_name}:{tag_name}: {e}")
+            logger.error(f"Unexpected error during deployment call for {docker_hub_repo_name}:{tag_name}: {e}") # Use docker_hub_repo_name
             await context.bot.send_message(
                 chat_id=chat_id,
-                text=f"⚠️ An unexpected error occurred while trying to deploy {escaped_repo_name_msg}:{escaped_tag_name_msg}\\."
+                text=f"⚠️ An unexpected error occurred while trying to deploy {escaped_docker_hub_repo_name_msg}:{escaped_tag_name_msg}\\."
             )
     else:
         logger.warning(f"Unknown action in callback_query: {query.data}")
