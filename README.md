@@ -27,3 +27,4 @@ With a configurated pipeline, a deployment will be activated by that.
 `docker compose up --build -d; docker compose logs -f`
 
 
+To watch options : /start
